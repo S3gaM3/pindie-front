@@ -1,10 +1,10 @@
 'use client'
 import { getGamesByCategory } from './data/data-utils.js';
 import { useGetDataByCategory } from './api/api-hooks.js';
-import { Banner } from './components/banner/Banner'
+import { Banner } from './components/Banner/Banner.jsx'
 import { CardList } from "./components/CardsListSection/CardList.jsx";
 import { CardsListSection } from './components/CardsListSection/CardsListSection.jsx';
-import { Promo } from './components/promo/Promo'
+import { Promo } from './components/Promo/Promo.jsx'
 import { useState, useEffect } from 'react';
 import { endpoints } from './api/config.js';
 import { Preloader } from './components/Preloader/Preloader.jsx';
