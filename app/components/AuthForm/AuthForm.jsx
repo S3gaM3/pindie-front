@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from 'react';
 import Styles from './AuthForm.module.css';
 import { endpoints } from '@/app/api/config';
