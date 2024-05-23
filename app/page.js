@@ -8,16 +8,25 @@ import { useGetDataByCategory } from "./api/api-hooks";
 import { Preloader } from "@/app/components/Preloader/Preloader";
 
 export default function Home() {
-  const popularGames = useGetDataByCategory(endpoints.games, "popular");
-  const newGames = useGetDataByCategory(endpoints.games, "new");
+  const { data: popularGames, loading: loadingPopular, error: errorPopular } = useGetDataByCategory(endpoints.games, "popular");
+  const { data: newGames, loading: loadingNew, error: errorNew } = useGetDataByCategory(endpoints.games, "new");
+
+  if (loadingPopular || loadingNew) {
+    return <Preloader />;
+  }
+
+  if (errorPopular || errorNew) {
+    return <div>Ошибка загрузки данных. Попробуйте обновить страницу.</div>;
+  }
+
   return (
     <main className="main">
       <Banner />
       {
-        (popularGames && newGames) ? (
+        popularGames && newGames ? (
           <>
-            <CardsListSection id="popular" title="Популярные" data={popularGames} type="slider"/>
-            <CardsListSection id="new" title="Новинки"  data={newGames} type="slider"/>
+            <CardsListSection id="popular" title="Популярные" data={popularGames} type="slider" />
+            <CardsListSection id="new" title="Новинки" data={newGames} type="slider" />
           </>
         ) : <Preloader />
       }
