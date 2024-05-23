@@ -1,36 +1,34 @@
-'use client';
-
-import { endpoints } from "./api/config";
-import { Banner } from "./components/Banner/Banner";
-import { CardsListSection } from "./components/CardsListSection/CardsListSection";
-import { Promo } from "./components/Promo/Promo";
-import { useGetDataByCategory } from "./api/api-hooks";
-import { Preloader } from "@/app/components/Preloader/Preloader";
-
+'use client'
+import { getGamesByCategory } from './data/data-utils.js';
+import { useGetDataByCategory } from './api/api-hooks.js';
+import { Banner } from './components/banner/Banner'
+import { CardList } from "./components/CardsListSection/CardList.jsx";
+import { CardsListSection } from './components/CardsListSection/CardsListSection.jsx';
+import { Promo } from './components/promo/Promo'
+import { useState, useEffect } from 'react';
+import { endpoints } from './api/config.js';
+import { Preloader } from './components/Preloader/Preloader.jsx';
 export default function Home() {
-  const { data: popularGames, loading: loadingPopular, error: errorPopular } = useGetDataByCategory(endpoints.games, "popular");
-  const { data: newGames, loading: loadingNew, error: errorNew } = useGetDataByCategory(endpoints.games, "new");
-
-  if (loadingPopular || loadingNew) {
-    return <Preloader />;
+  const homePopularGames = useGetDataByCategory(endpoints.games, 'popular');
+  const homeNewGames = useGetDataByCategory(endpoints.games, 'new');
+  const [codeIsVisible, setCode] = useState(false)
+  const handleButtonClick = () => {
+    setCode(!codeIsVisible)
   }
-
-  if (errorPopular || errorNew) {
-    return <div>Ошибка загрузки данных. Попробуйте обновить страницу.</div>;
-  }
-
   return (
     <main className="main">
       <Banner />
-      {
-        popularGames && newGames ? (
-          <>
-            <CardsListSection id="popular" title="Популярные" data={popularGames} type="slider" />
-            <CardsListSection id="new" title="Новинки" data={newGames} type="slider" />
-          </>
-        ) : <Preloader />
-      }
-      <Promo />
+      {homePopularGames ? (
+        <CardsListSection id='popular' title='Популярное' type='slider' data={homePopularGames}/>
+      ) : (
+        <Preloader />
+      )}
+      {homeNewGames ? (
+        <CardsListSection id='new' title='Новое' type='slider' data={homeNewGames} />
+      ) : (
+        <Preloader />
+      )}
+      <Promo codeIsVisible={codeIsVisible} handleButtonClick={handleButtonClick} setCode={setCode} />
     </main>
   );
 }

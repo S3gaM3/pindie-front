@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 import { useStore } from './store/app-store';
 
 export const App = (props) => {
-
   const store = useStore();
 
   useEffect(() => {
