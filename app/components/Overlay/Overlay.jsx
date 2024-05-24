@@ -1,10 +1,16 @@
-import Styles from "./Overlay.module.css";
+// app/components/Overlay/Overlay.jsx
+
+"use client";
+
+import Styles from "@/app/components/Overlay/Overlay.module.css";
 
 export const Overlay = (props) => {
   return (
     <div
-    className={`${Styles["overlay"]} ${props.popupIsOpened && Styles["overlay_is-opened"]}`}
-    onClick={props.changePopup}
+      className={`${Styles["overlay"]} ${props.isOpened && Styles["overlay_is-opened"]}`}
+      onClick={props.closePopup}
     ></div>
   );
 };
+
+export default Overlay;

@@ -1,13 +1,19 @@
-'use client'
+// app/components/CardsListSection/CardsSlider.jsx
+
+"use client";
+
 import Swiper from "swiper";
-import 'swiper/css'
-import { Autoplay, Pagination } from 'swiper/modules'
-import 'swiper/css/pagination'
-import Styles from './CardSlider.module.css'
+import { Autoplay, Pagination } from "swiper/modules";
 import { useEffect } from "react";
 import Link from "next/link";
-import { Card } from "./Card";
-export const CardSlider = (props) => {
+
+import Card from "@/app/components/Card/Card";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import Styles from "@/app/components/CardsListSection/CardsSlider.module.css";
+
+export const CardsSlider = (props) => {
   useEffect(() => {
     const options = {
       loop: false,
@@ -15,7 +21,7 @@ export const CardSlider = (props) => {
       allowTouchMove: true,
       slidesPerView: 1,
       autoplay: {
-      enabled: false,
+        enabled: false,
       },
       pagination: {
         el: ".swiper-pagination",
@@ -43,15 +49,16 @@ export const CardSlider = (props) => {
     };
     new Swiper(".swiper", options);
   }, []);
+
   return (
     <>
       <div className={`swiper ${Styles["slider"]}`}>
         <ul className={`swiper-wrapper ${Styles["slider-wrapper"]}`}>
-          {props.data.map((item, i) => {
+          {props.data.map((gameData, i) => {
             return (
               <li className={`swiper-slide ${Styles["slide"]}`} key={i}>
-                <Link href={`/games/${item.id}`}>
-                  <Card {...item} />
+                <Link href={`/games/${gameData.id}`}>
+                  <Card gameData={gameData} />
                 </Link>
               </li>
             );
@@ -62,3 +69,5 @@ export const CardSlider = (props) => {
     </>
   );
 };
+
+export default CardsSlider;

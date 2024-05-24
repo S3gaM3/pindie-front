@@ -1,19 +1,25 @@
+/* app/components/Card/Card.module.css */
+
 .card {
-  height: 100%;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: white;
-  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
 }
 
 .card:hover {
-  background-color: #FFFF00;
+  background-color: #ffff00;
   transform: translate(-8px, -8px);
 }
 
 .card__image {
-  width: 100%;
+  width: 100% !important;
+  height: auto !important;
+  position: relative !important;
   aspect-ratio: 375 / 250;
   object-fit: cover;
   object-position: center;
@@ -48,7 +54,7 @@
 }
 
 .card__author .card__accent {
-  font-family: 'Rubic One', sans-serif;
+  font-family: "Rubic One", sans-serif;
 }
 
 .card__votes {
@@ -56,7 +62,7 @@
 }
 
 .card__votes .card__accent {
-  font-family: 'Rubic One', sans-serif;
+  font-family: "Rubic One", sans-serif;
   display: inline-block;
   padding: 4px 17px 25px 4px;
   background-color: black;

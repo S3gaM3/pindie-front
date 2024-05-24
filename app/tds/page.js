@@ -1,18 +1,23 @@
-'use client';
-import { endpoints } from "../api/config"
-import { CardList } from "../components/CardsListSection/CardList"
-import { CardsListSection } from "../components/CardsListSection/CardsListSection";
-import { useGetDataByCategory } from "../api/api-hooks";
-import { Preloader } from "../components/Preloader/Preloader";
-export default function Tds() {
-    const tdsGames = useGetDataByCategory(endpoints.games, 'TDS')
-    return (
-        tdsGames ? (
-            <main className={"main-inner"}>
-                <CardsListSection id="tds" title="Шутеры с видом сверху" data={tdsGames} />
-            </main>            
-        ) : (
-            <Preloader />
-        )
-    )
+// app/tds/page.jsx
+
+"use client";
+
+import Preloader from "@/app/components/Preloader/Preloader";
+import CardsListSection from "@/app/components/CardsListSection/CardsListSection";
+
+import { useGetDataByCategory } from "@/app/api/api-hooks";
+import endpoints from "@/app/api/config";
+
+export default function TDS() {
+  const tdsGames = useGetDataByCategory(endpoints.games, "TDS");
+
+  return (
+    <main className="main-inner">
+      {tdsGames ? (
+        <CardsListSection data={tdsGames} id="TDS" title="TDS" />
+      ) : (
+        <Preloader />
+      )}
+    </main>
+  );
 }

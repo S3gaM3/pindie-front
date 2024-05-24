@@ -1,24 +1,30 @@
-'use client';
+"use client"
 
-import { Header } from './components/Header/Header';
-import { Footer } from './components/Footer/Footer';
+import { useEffect } from "react"
 
-import { useEffect } from 'react';
+import Header from "@/app/components/Header/Header"
+import Footer from "@/app/components/Footer/Footer"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
-import { useStore } from './store/app-store';
+import { useStore } from "@/app/store/app-store"
 
 export const App = (props) => {
-  const store = useStore();
+	const store = useStore()
 
-  useEffect(() => {
-    store.checkAuth();
-  }, []);
+	useEffect(() => {
+		store.checkAuth()
+	}, [])
 
-  return (
-    <>
-      <Header />
-      {props.children}
-      <Footer />
-    </>
-  ) 
-};
+	return (
+		<>
+			<Header />
+			{props.children}
+			<Footer />
+			<Analytics />
+			<SpeedInsights />
+		</>
+	)
+}
+
+export default App

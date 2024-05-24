@@ -1,9 +1,15 @@
-import Styles from "./Popup.module.css";
+// app/components/Popup/Popup.jsx
+
+"use client";
+
+import Styles from "@/app/components/Popup/Popup.module.css";
 
 export const Popup = (props) => {
   return (
-    <div className={`${Styles["popup"]} ${props.popupIsOpened && Styles["popup_is-opened"]}`}>
-      <button className={Styles["close"]} onClick={props.changePopup}>
+    <div
+      className={`${Styles["popup"]} ${props.isOpened && Styles["popup_is-opened"]}`}
+    >
+      <button className={Styles["close"]} onClick={props.closePopup}>
         <svg
           className={Styles["close-icon"]}
           xmlns="http://www.w3.org/2000/svg"
@@ -20,3 +26,5 @@ export const Popup = (props) => {
     </div>
   );
 };
+
+export default Popup;
