@@ -9,8 +9,12 @@ export const useGetDataByCategory = (endpoint, category) => {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getNormalizedGamesDataByCategory(endpoint, category);
-      setData(data);
+      const rawData = await getNormalizedGamesDataByCategory(endpoint, category);
+      if (isResponseOk(rawData)) {
+        setData(rawData);
+      } else {
+        setData(null);
+      }
     }
     fetchData();
   }, [category, endpoint]);

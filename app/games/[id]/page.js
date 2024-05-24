@@ -1,103 +1,73 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import Image from 'next/image';
-
-import Preloader from "@/app/components/Preloader/Preloader";
-import GameNotFound from "@/app/components/GameNotFound/GameNotFound";
-
-import Styles from "@/app/games/[id]/Game.module.css";
-
-import endpoints from "@/app/api/config";
+import { endpoints } from "../../api/config";
 import {
   getNormalizedGameDataById,
   isResponseOk,
   checkIfUserVoted,
   vote,
-} from "@/app/api/api-utils";
+} from "../../api/api-utils";
+import { GameNotFound } from "@/app/components/GameNotFound/GameNotFound";
+import { Preloader } from "@/app/components/Preloader/Preloader";
+import { useState, useEffect } from "react";
 import { useStore } from "@/app/store/app-store";
 
-export async function generateStaticParams() {
-  const gamesData = await fetchData();
-  const params = gamesData.map(game => ({
-    params: { id: game.id.toString() }
-  }));
-  return params;
-}
+import Styles from "./Game.module.css";
 
 export default function GamePage(props) {
-  const authContext = useStore();
-  const [preloaderVisible, setPreloaderVisible] = useState(true);
   const [game, setGame] = useState(null);
+  const [preloaderVisible, setPreloaderVisible] = useState(true);
   const [isVoted, setIsVoted] = useState(false);
+  const authContext = useStore();
+
+  useEffect(() => {
+    async function fetchData() {
+      const game = await getNormalizedGameDataById(
+        endpoints.games,
+        props.params.id
+      );
+      isResponseOk(game) ? setGame(game) : setGame(null);
+      setPreloaderVisible(false);
+    }
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    authContext.user && game ? setIsVoted(checkIfUserVoted(game, authContext.user.id)) : setIsVoted(false);
+  }, [authContext.user, game]);
 
   const handleVote = async () => {
-    const jwt = authContext.token;
-
-    let usersIdArray = game.users.length ? game.users.map((user) => user.id) : [];
+    const jwt = authContext.token
+    let usersIdArray = game.users.length
+      ? game.users.map((user) => user.id)
+      : [];
     usersIdArray.push(authContext.user.id);
     const response = await vote(
       `${endpoints.games}/${game.id}`,
       jwt,
       usersIdArray
     );
-
     if (isResponseOk(response)) {
-      setGame((prevGame) => ({
-        ...prevGame,
-        users: [...prevGame.users, authContext.user],
-        users_permissions_users: [
-          ...prevGame.users_permissions_users,
-          authContext.user,
-        ],
-      }));
-
+      setGame(() => {
+        return {
+          ...game,
+          users: [...game.users, authContext.user],
+        };
+      });
       setIsVoted(true);
     }
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      setPreloaderVisible(true);
-      const gameData = await getNormalizedGameDataById(
-        endpoints.games,
-        props.params.id
-      );
-      if (isResponseOk(gameData)) {
-        setGame(gameData);
-      } else {
-        setGame(null);
-      }
-      setPreloaderVisible(false);
-    }
-
-    fetchData();
-  }, [props.params.id]);
-
-  useEffect(() => {
-    if (authContext.user && game) {
-      setIsVoted(checkIfUserVoted(game, authContext.user.id));
-    } else {
-      setIsVoted(false);
-    }
-  }, [authContext.user, game]);
 
   return (
     <main className="main">
       {game ? (
         <>
           <section className={Styles["game"]}>
-            <iframe
-              className={Styles["game__iframe"]}
-              src={game.link}
-            ></iframe>
+            <iframe className={Styles["game__iframe"]} src={game.link}></iframe>
           </section>
           <section className={Styles["about"]}>
             <h2 className={Styles["about__title"]}>{game.title}</h2>
             <div className={Styles["about__content"]}>
-              <p className={Styles["about__description"]}>
-                {game.description}
-              </p>
+              <p className={Styles["about__description"]}>{game.description}</p>
               <div className={Styles["about__author"]}>
                 <p>
                   Автор:{" "}
