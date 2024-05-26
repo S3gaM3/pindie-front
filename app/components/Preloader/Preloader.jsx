@@ -1,15 +1,7 @@
-// app/components/Preloader/Preloader.jsx
-
-"use client";
-
 export const Preloader = () => {
   return (
     <div
-      style={{
-        aspectRatio: "16/9",
-        display: "grid",
-        placeItems: "center",
-      }}
+      style={{ aspectRatio: "16/9", display: "grid", placeItems: "center" }}
       className="preloader"
     >
       <svg
@@ -115,5 +107,3 @@ export const Preloader = () => {
     </div>
   );
 };
-
-export default Preloader;
