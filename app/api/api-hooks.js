@@ -1,23 +1,14 @@
-// app/api/api-hooks.js
-
-import { useState, useEffect } from "react";
-
-import { getNormalizedGamesDataByCategory } from "@/app/api/api-utils";
+import { useEffect, useState } from 'react'
+import { getNormalizedGamesDataByCategory } from './api-utils'
 
 export const useGetDataByCategory = (endpoint, category) => {
-  const [data, setData] = useState(null);
-
+  const [data, setData] = useState(null)
   useEffect(() => {
     async function fetchData() {
-      const rawData = await getNormalizedGamesDataByCategory(endpoint, category);
-      if (isResponseOk(rawData)) {
-        setData(rawData);
-      } else {
-        setData(null);
-      }
+      const data = await getNormalizedGamesDataByCategory(endpoint, category)
+      setData(data)
     }
-    fetchData();
-  }, [category, endpoint]);
-
-  return data;
-};
+    fetchData()
+  }, [])
+  return data
+}

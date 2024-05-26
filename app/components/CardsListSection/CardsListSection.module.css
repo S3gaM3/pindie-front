@@ -1,5 +1,3 @@
-/* app/components/CardsListSection/CardsListSection.module.css */
-
 .list-section:not(:first-of-type) {
   margin-top: 40px;
 }
